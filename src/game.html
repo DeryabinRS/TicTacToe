@@ -1,0 +1,66 @@
+---
+layoud: default
+title: main
+---
+
+<div class="container">
+	<div id="setting"></div>
+	<div id="timer"></div>
+	<div id="app" class="pt-2"></div>
+</div>
+
+
+
+<script src="js/app.min.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+	const app = document.querySelector('#app')
+	//SET SETTINGS
+	const settingPlace = document.querySelector('#setting')
+
+	const game = new TikTacToe('#app', settingPlace);
+
+	const selectPlace = game.createSelectPlace(changePlaceSize);
+	const selectPlayer = game.createSelectPlayer(changePlayer);
+	const btnStartGame = game.createBtns("startgame", "Start Game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
+
+	function startGame(e) {
+		if(e){
+			e.target.remove()
+			selectPlace.remove();
+			selectPlayer.remove();
+		}
+		game.createBtns("pausegame","Pause",["btn", "btn-info", "me-2", "mt-2"], pauseGame,	settingPlace);
+		game.createBtns("exitgame","Exit Game",["btn", "btn-danger", "me-2", "mt-2"], exitGame, settingPlace);
+		game.createBtns("refreshgame", "Refresh Game",["btn", "btn-success", "me-2", "mt-2", "visually-hidden"], refreshGame, settingPlace);
+		game.startGame();
+	}
+
+	function refreshGame(e) {
+		document.querySelector('#exitgame').remove();
+		e.target.remove();
+		app.innerHTML = '';
+		startGame();
+	}
+
+	function changePlayer(e) {
+		game.selectPlayer(e.target.dataset.player);
+	}
+
+	function changePlaceSize(e) {
+		game.selectPlaceSize(e.target.value);
+	}
+
+	function pauseGame(e){
+		e.preventDefault();
+		const btn = e.target;
+		game.pauseGame(btn);
+	}
+
+	function exitGame(){
+		game.exitGame();
+	}
+
+});
+</script>
