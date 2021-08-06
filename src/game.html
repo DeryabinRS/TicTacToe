@@ -1,5 +1,5 @@
 ---
-layoud: default
+layout: default
 title: TikTakToe - game
 ---
 
@@ -7,7 +7,7 @@ title: TikTakToe - game
 	<div id="msg"></div>
 	<div id="setting"></div>
 	<div id="timer"></div>
-	<div id="app" class="pt-2"></div>
+	<div id="app" class="pt-2"></div> 
 </div>
 
 
@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	const selectPlayer = game.createSelectPlayer(changePlayer);
 
 	if(userLs){
-		const btnStartGame = game.createBtns("startgame", "Start Game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
+		const btnStartGame = game.createBtns("startgame", "Start new game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
 	}else{
 		user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], 'You are not registred. <a href="/">Registration -></a>');
 	}	

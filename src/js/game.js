@@ -271,18 +271,20 @@
 		const y = +el.dataset.ceil;
 		const ceil = this.state.placeGame[x][y];
 		if (!ceil && !this.state.endGame) {
-		if (this.state.currentPlayer) {
-			this.setCell(x, y, "x", el);
-			//this.clearTimer();
-			if (this.state.dafaultSettings.players === 1 && !this.state.endGame) {
-			this.botGame();
+			if (this.state.currentPlayer) {
+				this.setCell(x, y, "x", el);
+				//this.clearTimer();
+				if (this.state.dafaultSettings.players === 1 && !this.state.endGame) {
+				this.botGame();
+				}
+			} else {
+				this.setCell(x, y, "o", el);
 			}
-		} else {
-			this.setCell(x, y, "o", el);
 		}
+		if(!this.state.endGame){
+			localStorage.setItem('current_game', JSON.stringify(this.state.placeGame))
 		}
-
-		console.log(this.state.placeGame);
+		//console.log(this.state.placeGame);
 	}
 
 	setCell(x, y, t, el = null) {
@@ -306,13 +308,13 @@
 		btnRefrash.classList.toggle("visually-hidden", "");
 
 		this.createBtns(
-		"exitgame",
-		"exitGame",
-		["btn", "btn-danger", "me-2", "mt-2"],
-		this.exitGame,
-		this.settingPlace
+			"exitgame",
+			"exitGame",
+			["btn", "btn-danger", "me-2", "mt-2"],
+			this.exitGame,
+			this.settingPlace
 		);
-
+		localStorage.removeItem('current_game');
 		this.state.endGame = true;
 		let strWin = '';
 		switch (checkGame) {
