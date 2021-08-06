@@ -8,10 +8,10 @@
 		const userLs = JSON.parse(localStorage.getItem('user'));
 		const settingPlace = document.querySelector('#setting');
 		const game = new TikTacToe('#app', settingPlace);
+		const selectPlace = game.createSelectPlace(changePlaceSize);
+		const selectPlayer = game.createSelectPlayer(changePlayer);
 	
 		if(userLs){
-			const selectPlace = game.createSelectPlace(changePlaceSize);
-			const selectPlayer = game.createSelectPlayer(changePlayer);
 			const btnStartGame = game.createBtns("startgame", "Start Game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
 		}else{
 			user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], 'You are not registred. <a href="/">Registration -></a>');
