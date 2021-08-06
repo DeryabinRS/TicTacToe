@@ -4,6 +4,7 @@ title: TikTakToe - game
 ---
 
 <div class="container">
+	<div id="msg"></div>
 	<div id="setting"></div>
 	<div id="timer"></div>
 	<div id="app" class="pt-2"></div>
@@ -15,15 +16,22 @@ title: TikTakToe - game
 <script>
 window.addEventListener("DOMContentLoaded", () => {
 
-	const app = document.querySelector('#app')
+	const user = new User();
+
+	const app = document.querySelector('#app');
+	const msgBlock = document.querySelector('#msg');
 	//SET SETTINGS
-	const settingPlace = document.querySelector('#setting')
+	const userLs = JSON.parse(localStorage.getItem('user'));
 
-	const game = new TikTacToe('#app', settingPlace);
-
-	const selectPlace = game.createSelectPlace(changePlaceSize);
-	const selectPlayer = game.createSelectPlayer(changePlayer);
-	const btnStartGame = game.createBtns("startgame", "Start Game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
+	if(userLs){
+		const settingPlace = document.querySelector('#setting')
+		const game = new TikTacToe('#app', settingPlace);
+		const selectPlace = game.createSelectPlace(changePlaceSize);
+		const selectPlayer = game.createSelectPlayer(changePlayer);
+		const btnStartGame = game.createBtns("startgame", "Start Game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
+	}else{
+		user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], 'You are not registred. <a href="/">Registration -></a>');
+	}	
 
 	function startGame(e) {
 		if(e){

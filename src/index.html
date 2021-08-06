@@ -12,28 +12,28 @@ title: TikTakToe - Home
 <script>
 	const user = new User();
 
-	const userLs = localStorage.getItem('user');
+	const userLs = JSON.parse(localStorage.getItem('user'));
 	const msgBlock = document.querySelector('#msg');
 
 	let userForm;
 
-	if(this.id){
-
+	if(userLs){
+		user.createUserAccount(userLs);
 	}else{
 		userForm = user.createUserBtnsForm();
 		user.createEventElForm('#sign_up', 'click', signUp);
-		user.createEventElForm('#sign_in', 'click', signIn);
+		//user.createEventElForm('#sign_in', 'click', signIn);
 	}
 
 	function signUp() {
 		userForm = user.createRegForm();
 		user.createEventElForm('#btn_reg', 'click', reg);
 	}
-
-	function signIn() {
-		userForm = user.createAuthForm();
-		user.createEventElForm('#btn_auth', 'click', auth);
-	}
+	// Для реальной БД
+	// function signIn() {
+	// 	userForm = user.createAuthForm();
+	// 	user.createEventElForm('#btn_auth', 'click', auth);
+	// }
 
 	async function reg() {
 		const login = document.querySelector('#login').value;
@@ -48,21 +48,13 @@ title: TikTakToe - Home
 		if(msg.res === 0){
 			user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], msg.message);
 		}else{
-			user.createMsgBox(msgBlock, ['alert', 'alert-succes', 'mt-2'], msg.message);
+			user.createMsgBox(msgBlock, ['alert', 'alert-success', 'mt-2'], msg.message);
+			userForm.remove();
 		}
-		// const res = await fetch('/db.json', {
-		// 	method: "POST",
-		// 	headers: {'Content-Type': 'application/json'}
-		// })
-		// body: JSON.stringify(newUser);
 	}
 
 	function auth() {
 		console.log('auth')
 	}
 
-	//btnSignIn = document.querySelector('#auth_user')
-	//btnSignIn.addEventListener('click', getUsers)
-
-	
 </script>
