@@ -1,8 +1,40 @@
 ---
 layoud: default
-title: main
+title: TikTakToe - Home
 ---
 
 <div class="container">
-	INDEX
+	<div id='app'></div>
+	<div id="user_account">
+
+	</div>
 </div>
+
+<script src="js/app.min.js"></script>
+<script>
+	const user = new User();
+
+	const userLs = localStorage.getItem('user');
+	let userForm;
+
+	if(this.id){
+
+	}else{
+		userForm = user.createUserBtnsForm();
+		user.createEventElForm('#sign_up', 'click', signUp)
+		user.createEventElForm('#sign_in', 'click', signIn)
+	}
+
+	function signUp() {
+		userForm = user.createRegForm();
+	}
+
+	function signIn() {
+		userForm = user.createAuthForm();
+	}
+
+	//btnSignIn = document.querySelector('#auth_user')
+	//btnSignIn.addEventListener('click', getUsers)
+
+	
+</script>
