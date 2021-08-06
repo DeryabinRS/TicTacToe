@@ -1,22 +1,52 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TikTakToe - Home</title><link rel="stylesheet" href="css/style.min.css"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></head><body><nav class="navbar navbar-expand-md navbar-light bg-light"><div class="container-fluid"><a class="navbar-brand" href="#"><img src="images/logo.webp" height="50"></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav me-auto mb-2 mb-lg-0"><li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li><li class="nav-item"><a class="nav-link" href="/game.html">Game</a></li></ul></div></div></nav><div class="container"><div id="app"></div><div id="user_account"></div></div><script src="js/app.min.js"></script><script>const user = new User();
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TikTakToe - Home</title><link rel="stylesheet" href="css/style.min.css"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></head><body><nav class="navbar navbar-expand-md navbar-light bg-light"><div class="container-fluid"><a class="navbar-brand" href="#"><img src="images/logo.webp" height="50"></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav me-auto mb-2 mb-lg-0"><li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li><li class="nav-item"><a class="nav-link" href="/game.html">Game</a></li></ul></div></div></nav><div class="container"><div id="msg"></div><div id="app"></div></div><script src="js/app.min.js"></script><script>const user = new User();
 	
 		const userLs = localStorage.getItem('user');
+		const msgBlock = document.querySelector('#msg');
+	
 		let userForm;
 	
 		if(this.id){
 	
 		}else{
 			userForm = user.createUserBtnsForm();
-			user.createEventElForm('#sign_up', 'click', signUp)
-			user.createEventElForm('#sign_in', 'click', signIn)
+			user.createEventElForm('#sign_up', 'click', signUp);
+			user.createEventElForm('#sign_in', 'click', signIn);
 		}
 	
 		function signUp() {
 			userForm = user.createRegForm();
+			user.createEventElForm('#btn_reg', 'click', reg);
 		}
 	
 		function signIn() {
 			userForm = user.createAuthForm();
+			user.createEventElForm('#btn_auth', 'click', auth);
+		}
+	
+		async function reg() {
+			const login = document.querySelector('#login').value;
+			const password = document.querySelector('#password').value;
+			const password_cfm = document.querySelector('#password_cfm').value;
+	
+			const newUser = {login, password, password_cfm}
+	
+			const msg = await user.registrationUser(newUser)
+			console.log(msg)
+	
+			if(msg.res === 0){
+				user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], msg.message);
+			}else{
+				user.createMsgBox(msgBlock, ['alert', 'alert-succes', 'mt-2'], msg.message);
+			}
+			// const res = await fetch('/db.json', {
+			// 	method: "POST",
+			// 	headers: {'Content-Type': 'application/json'}
+			// })
+			// body: JSON.stringify(newUser);
+		}
+	
+		function auth() {
+			console.log('auth')
 		}
 	
 		//btnSignIn = document.querySelector('#auth_user')

@@ -1,7 +1,7 @@
 [
 	{
 		"id" : 1,
-		"name" : "admin", 
+		"login" : "admin", 
 		"password" : "admin"
 	}	
 ]

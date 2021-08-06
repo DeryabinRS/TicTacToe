@@ -4,10 +4,8 @@ title: TikTakToe - Home
 ---
 
 <div class="container">
-	<div id='app'></div>
-	<div id="user_account">
-
-	</div>
+	<div id="msg"></div>
+	<div id="app"></div>
 </div>
 
 <script src="js/app.min.js"></script>
@@ -15,22 +13,52 @@ title: TikTakToe - Home
 	const user = new User();
 
 	const userLs = localStorage.getItem('user');
+	const msgBlock = document.querySelector('#msg');
+
 	let userForm;
 
 	if(this.id){
 
 	}else{
 		userForm = user.createUserBtnsForm();
-		user.createEventElForm('#sign_up', 'click', signUp)
-		user.createEventElForm('#sign_in', 'click', signIn)
+		user.createEventElForm('#sign_up', 'click', signUp);
+		user.createEventElForm('#sign_in', 'click', signIn);
 	}
 
 	function signUp() {
 		userForm = user.createRegForm();
+		user.createEventElForm('#btn_reg', 'click', reg);
 	}
 
 	function signIn() {
 		userForm = user.createAuthForm();
+		user.createEventElForm('#btn_auth', 'click', auth);
+	}
+
+	async function reg() {
+		const login = document.querySelector('#login').value;
+		const password = document.querySelector('#password').value;
+		const password_cfm = document.querySelector('#password_cfm').value;
+
+		const newUser = {login, password, password_cfm}
+
+		const msg = await user.registrationUser(newUser)
+		console.log(msg)
+
+		if(msg.res === 0){
+			user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], msg.message);
+		}else{
+			user.createMsgBox(msgBlock, ['alert', 'alert-succes', 'mt-2'], msg.message);
+		}
+		// const res = await fetch('/db.json', {
+		// 	method: "POST",
+		// 	headers: {'Content-Type': 'application/json'}
+		// })
+		// body: JSON.stringify(newUser);
+	}
+
+	function auth() {
+		console.log('auth')
 	}
 
 	//btnSignIn = document.querySelector('#auth_user')
