@@ -8,6 +8,7 @@ title: TikTakToe - game
 	<div id="setting"></div>
 	<div id="timer"></div>
 	<div id="app" class="pt-2"></div> 
+	<div id="step_game"></div>
 </div>
 
 
@@ -17,7 +18,7 @@ title: TikTakToe - game
 window.addEventListener("DOMContentLoaded", () => {
 
 	const user = new User();
-
+	const currentGame = localStorage.getItem('current_game');
 	const app = document.querySelector('#app');
 	const msgBlock = document.querySelector('#msg');
 	//SET SETTINGS
@@ -26,19 +27,22 @@ window.addEventListener("DOMContentLoaded", () => {
 	const game = new TikTacToe('#app', settingPlace);
 	const selectPlace = game.createSelectPlace(changePlaceSize);
 	const selectPlayer = game.createSelectPlayer(changePlayer);
+	const stepArea = document.querySelector('#step_game');
+	if(currentGame){
+		const btnContinueCurrentGame = game.createBtns("continue_game", "Continue current game", ["btn", "btn-info", "mt-2", "me-2"], startGame, settingPlace);
+	}
 
 	if(userLs){
-		const btnStartGame = game.createBtns("startgame", "Start new game", ["btn", "btn-success", "mt-2"], startGame, settingPlace);
+		const btnStartGame = game.createBtns("startgame", "Start new game", ["btn", "btn-success", "mt-2", "me-2"], startGame, settingPlace);
 	}else{
+		selectPlace.remove()
+		selectPlayer.remove()
 		user.createMsgBox(msgBlock, ['alert', 'alert-danger', 'mt-2'], 'You are not registred. <a href="/">Registration -></a>');
 	}	
 
 	function startGame(e) {
-		if(e){
-			e.target.remove()
-			selectPlace.remove();
-			selectPlayer.remove();
-		}
+		settingPlace.innerHTML = '';
+		stepArea.innerHTML = '';
 		game.createBtns("pausegame","Pause",["btn", "btn-info", "me-2", "mt-2"], pauseGame,	settingPlace);
 		game.createBtns("exitgame","Exit Game",["btn", "btn-danger", "me-2", "mt-2"], exitGame, settingPlace);
 		game.createBtns("refreshgame", "Refresh Game",["btn", "btn-success", "me-2", "mt-2", "visually-hidden"], refreshGame, settingPlace);

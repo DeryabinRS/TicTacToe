@@ -19,6 +19,7 @@ title: TikTakToe - Home
 
 	if(userLs){
 		user.createUserAccount(userLs);
+		user.createEventElForm('#logout', 'click', user.Logout);
 	}else{
 		userForm = user.createUserBtnsForm();
 		user.createEventElForm('#sign_up', 'click', signUp);

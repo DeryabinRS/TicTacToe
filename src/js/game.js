@@ -281,10 +281,9 @@
 				this.setCell(x, y, "o", el);
 			}
 		}
-		if(!this.state.endGame){
+		if(!this.state.endGame && this.state.dafaultSettings.players === 1){
 			localStorage.setItem('current_game', JSON.stringify(this.state.placeGame))
 		}
-		//console.log(this.state.placeGame);
 	}
 
 	setCell(x, y, t, el = null) {
@@ -292,11 +291,26 @@
 		if (!el) el = document.querySelector(`[data-row="${x}"][data-ceil="${y}"]`);
 		this.state.placeGame[x][y] = t; // Запомнить t в массиве
 		el.textContent = t; // подставляем знак
+		this.state.gameStep.push([t, x, y])
+		this.stepGame()
 		this.state.currentPlayer = !this.state.currentPlayer;
 		const checkGame = this.checkPlace();
 		this.clearTimer();
 		if (checkGame) this.endGame(checkGame);
-		if (!this.state.endGame) this.createTimer();
+		if (!this.state.endGame) {
+			this.createTimer();
+		}
+	}
+
+	stepGame(){
+		const stepArea = document.querySelector('#step_game');
+		stepArea.innerHTML = '';
+		this.state.gameStep.forEach((step, index) => {
+			const msg = document.createElement('div');
+			msg.classList.add("alert", "alert-light", "mt-2");
+			msg.innerHTML = `Step ${index + 1}: Simbol - ${step[0]}, Coordinates: x: ${step[1] + 1}, y: ${step[2] + 1}`;
+			stepArea.append(msg);
+		})
 	}
 
 	endGame(checkGame) {
@@ -315,7 +329,10 @@
 			this.settingPlace
 		);
 		localStorage.removeItem('current_game');
+		
 		this.state.endGame = true;
+		this.state.gameStep = [];
+
 		let strWin = '';
 		switch (checkGame) {
 		case "x":

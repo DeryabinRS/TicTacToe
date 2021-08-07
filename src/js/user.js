@@ -78,12 +78,18 @@ class User {
   }
 
   createUserAccount(userLs) {
-    const contentForm = `
+    const currentGame = localStorage.getItem('current_game');
+    let contentForm = `
 			<div>
 				<label for="login" class="form-label">User name</label>
 				<input type="text" class="form-control" id="login" value="${userLs.login}" readonly>
+        <button id="logout" class="btn btn-danger mt-2">Logout</button>
 			</div>
 		`;
+    
+    if(currentGame){
+      contentForm += `<hr><div><button id="continue_game" class="btn btn-info">Continue current game</button></div>`;
+    }
     const form = this.createForm(
       "reg_form",
       ["card", "px-2", "py-2", "mt-2"],
@@ -109,13 +115,13 @@ class User {
     return false;
   }
 
-  async registrationUser(user = {}) {
+  registrationUser(user = {}) {
     if (user.login === "") return { res: 0, message: "Enter login" };
     if (user.password === "") return { res: 0, message: "Enter password" };
     if (user.password !== user.password_cfm)
       return { res: 0, message: "Password mismatch" };
 
-    const checkUser = await this.getUser(user.login);
+    const checkUser = this.getUser(user.login);
     if (!checkUser) {
       const newUser = {
         login: user.login,
@@ -126,6 +132,11 @@ class User {
     } else {
       return { res: 0, message: "User already exists" };
     }
+  }
+
+  Logout(){
+    localStorage.clear();
+    window.location = './index.html'
   }
 }
 
