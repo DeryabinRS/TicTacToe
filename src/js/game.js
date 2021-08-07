@@ -329,7 +329,7 @@
 			this.settingPlace
 		);
 		localStorage.removeItem('current_game');
-		
+	
 		this.state.endGame = true;
 		this.state.gameStep = [];
 
@@ -340,19 +340,44 @@
 				strWin = "You WIN!!!";
 			}
 			else strWin = "Player 1, WIN!";
+			this.setHistory("WIN");
 		break;
 		case "o":
 			if (this.state.dafaultSettings.players === 1) {
 				strWin = "You LOSE!!!";
 			} else strWin = "Player 2, WIN!";
+			this.setHistory("LOSE");
 		break;
 		default:
 			strWin = "DRAW!!!";
+			this.setHistory("DRAW");
 		break;
 		}
-		this.idEl.innerHTML = `
-						<div class="alert alert-info mt-2">${strWin}</div>
-					`;
+		this.idEl.innerHTML = `<div class="alert alert-info mt-2">${strWin}</div>`;
+	}
+
+	setHistory(info){
+		const history = JSON.parse(localStorage.getItem('history_game'));
+		const Data = new Date();
+		const Year = Data.getFullYear();
+		const Month = Data.getMonth();
+		const Day = Data.getDate();
+		const Hour = Data.getHours();
+		const Minutes = Data.getMinutes();
+		const Seconds = Data.getSeconds();
+		const curDataFormat = `${Day}/${Month}/${Year} ${Hour}:${Minutes}:${Seconds}`;
+
+		const infoHistory = {
+			data: curDataFormat,
+			info
+		}
+		
+		if(history){
+			history.push(infoHistory);
+			localStorage.setItem('history_game', JSON.stringify(history));
+		}else{
+			localStorage.setItem('history_game', JSON.stringify([infoHistory]))
+		}
 	}
 
 	exitGame() {

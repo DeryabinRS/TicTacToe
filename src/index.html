@@ -6,6 +6,7 @@ title: TikTakToe - Home
 <div class="container">
 	<div id="msg"></div>
 	<div id="app"></div>
+	<div id="info"></div>
 </div>
 
 <script src="js/app.min.js"></script>
@@ -14,6 +15,7 @@ title: TikTakToe - Home
 
 	const userLs = JSON.parse(localStorage.getItem('user'));
 	const msgBlock = document.querySelector('#msg');
+	const infoBlock = document.querySelector('#info');
 
 	let userForm;
 
