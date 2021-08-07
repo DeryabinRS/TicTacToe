@@ -92,7 +92,7 @@ class User {
         let contentForm = '';
         if(history){
             contentForm += `<h4>History of games</h4><table class="table">
-              <thead><tr><th>Date</th><th>Info</th></tr></thead>
+              <thead><tr><th>Date</th><th>Status</th></tr></thead>
             `;
             history.forEach( h => {
                 contentForm += `<tr><td>${h.data}</td><td>${h.info}</td></tr>`

@@ -19,15 +19,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	const user = new User();
 	const currentGame = localStorage.getItem('current_game');
+	const userLs = JSON.parse(localStorage.getItem('user'));
+
+	//CREATE PLACE ELEMENTS
 	const app = document.querySelector('#app');
 	const msgBlock = document.querySelector('#msg');
-	//SET SETTINGS
-	const userLs = JSON.parse(localStorage.getItem('user'));
 	const settingPlace = document.querySelector('#setting');
-	const game = new TikTacToe('#app', settingPlace);
+
+	//SET SETTINGS
+	const game = new TicTacToe('#app', settingPlace, msgBlock);
+
 	const selectPlace = game.createSelectPlace(changePlaceSize);
 	const selectPlayer = game.createSelectPlayer(changePlayer);
 	const stepArea = document.querySelector('#step_game');
+
 	if(currentGame){
 		const btnContinueCurrentGame = game.createBtns("continue_game", "Continue current game", ["btn", "btn-info", "mt-2", "me-2"], startGame, settingPlace);
 	}
@@ -41,6 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	}	
 
 	function startGame(e) {
+		msgBlock.innerHTML = '';
 		settingPlace.innerHTML = '';
 		stepArea.innerHTML = '';
 		game.createBtns("pausegame","Pause",["btn", "btn-info", "me-2", "mt-2"], pauseGame,	settingPlace);

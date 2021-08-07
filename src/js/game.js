@@ -1,17 +1,17 @@
 "use strict"
 
-	class TikTacToe {
+class TicTacToe {
 	state = {
 		idEl: "#app",
 		btnStart: true,
 		btnStopGame: false,
 		btnPause: false,
 		dafaultSettings: {
-		difficulty: "easy",
-		sizePlace: 3,
-		timeoutStep: 10000,
-		players: 1,
-		simbol: "x",
+			difficulty: "easy",
+			sizePlace: 3,
+			timeoutStep: 10000,
+			players: 1,
+			simbol: "x",
 		},
 		currentPlayer: true,
 		userInfo: {},
@@ -21,9 +21,10 @@
 		isPaused: false,
 	};
 
-	constructor(idEl, settingPlace) {
+	constructor(idEl, settingPlace, msgBlock) {
 		//this.state = state;
-		this.state.idEl = document.querySelector(idEl);
+		//this.state.idEl = document.querySelector(idEl);
+		this.msgBlock = msgBlock;
 		this.idEl = document.querySelector(idEl);
 		this.settingPlace = settingPlace;
 	}
@@ -237,7 +238,7 @@
 			if (lC != null) return lC;
 
 			for (let i = 0; i < pS; i++) {
-			// проверка по вертикали
+			// проверка по горизонтали
 			lC = spg[stX + i][stY];
 			if (lC != null)
 				for (let j = 0; j < pS; j++)
@@ -245,7 +246,7 @@
 			if (lC != null) return lC;
 			}
 			for (let j = 0; j < pS; j++) {
-			// проверка по горизонтали
+			// проверка по вертикали
 			lC = spg[stX][stY + j];
 			if (lC != null)
 				for (let i = 0; i < pS; i++)
@@ -296,9 +297,14 @@
 		this.state.currentPlayer = !this.state.currentPlayer;
 		const checkGame = this.checkPlace();
 		this.clearTimer();
-		if (checkGame) this.endGame(checkGame);
-		if (!this.state.endGame) {
+		if (checkGame) {
+			this.endGame(checkGame, x, y);
+		}else{
+		//if (!this.state.endGame) {
 			this.createTimer();
+			if(this.state.isPaused){
+				this.pauseGame(document.querySelector('#pausegame'))
+			}
 		}
 	}
 
@@ -308,15 +314,16 @@
 		this.state.gameStep.forEach((step, index) => {
 			const msg = document.createElement('div');
 			msg.classList.add("alert", "alert-light", "mt-2");
-			msg.innerHTML = `Step ${index + 1}: Simbol - ${step[0]}, Coordinates: x: ${step[1] + 1}, y: ${step[2] + 1}`;
+			msg.innerHTML = `Step ${index + 1}: Simbol - ${step[0]}, Coordinates: x: ${step[2] + 1}, y: ${step[1] + 1}`;
 			stepArea.append(msg);
 		})
 	}
 
-	endGame(checkGame) {
+	endGame(checkGame, x, y) {
 		const btnEnd = document.querySelector("#exitgame");
 		const btnPause = document.querySelector("#pausegame");
 		const btnRefrash = document.querySelector("#refreshgame");
+		const ceilEndGame = document.querySelector(`[data-row="${x}"][data-ceil="${y}"]`)
 		btnEnd.remove();
 		btnPause.remove();
 		btnRefrash.classList.toggle("visually-hidden", "");
@@ -340,12 +347,14 @@
 				strWin = "You WIN!!!";
 			}
 			else strWin = "Player 1, WIN!";
+			ceilEndGame.classList.add('bg-success', 'text-white');
 			this.setHistory("WIN");
 		break;
 		case "o":
 			if (this.state.dafaultSettings.players === 1) {
 				strWin = "You LOSE!!!";
 			} else strWin = "Player 2, WIN!";
+			ceilEndGame.classList.add('bg-danger', 'text-white');
 			this.setHistory("LOSE");
 		break;
 		default:
@@ -353,7 +362,7 @@
 			this.setHistory("DRAW");
 		break;
 		}
-		this.idEl.innerHTML = `<div class="alert alert-info mt-2">${strWin}</div>`;
+		this.msgBlock.innerHTML = `<div class="alert alert-info mt-2">${strWin}</div>`;
 	}
 
 	setHistory(info){
@@ -386,13 +395,13 @@
 
 	pauseGame(btn) {
 		if (!this.state.isPaused) {
-		btn.classList.remove("btn-info");
-		btn.classList.add("btn-warning");
-		btn.textContent = "Continue";
+			btn.classList.remove("btn-info");
+			btn.classList.add("btn-warning");
+			btn.textContent = "Continue";
 		} else {
-		btn.classList.remove("btn-warning");
-		btn.classList.add("btn-info");
-		btn.textContent = "Pause";
+			btn.classList.remove("btn-warning");
+			btn.classList.add("btn-info");
+			btn.textContent = "Pause";
 		}
 
 		this.state.isPaused = !this.state.isPaused;
