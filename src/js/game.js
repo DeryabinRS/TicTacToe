@@ -378,7 +378,8 @@ class TicTacToe {
 
 		const infoHistory = {
 			data: curDataFormat,
-			info
+			info,
+			players:this.state.dafaultSettings.players
 		}
 		
 		if(history){
